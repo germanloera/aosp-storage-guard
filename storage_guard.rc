@@ -1,0 +1,12 @@
+service storage_guardd /system/bin/storage_guardd
+    class main
+    user system
+    group system readproc
+
+    # Creates a Unix socket in  /dev/socket/storage_guardd with permissions 0660
+    # Only accesible by the user system and the system group
+    socket storage_guard stream 0660 system system
+    capabilities SYS_ADMIN
+
+    # Optional: uncomment to avid autostart and enable on demand start
+    # disabled
