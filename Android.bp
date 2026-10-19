@@ -1,0 +1,58 @@
+// 1. Shared Library
+cc_library_shared {
+    name: "libstorage_telemetry",
+    srcs: [ "lib/storage_telemetry.cpp" ],
+    export_include_dirs: ["include"],
+    shared_libs: [
+    "libbase",
+    "liblog"
+    ],
+    cflags : [
+    "-Wall",
+    "-Werror",
+    "-Wextra",
+    ],
+}
+
+// 2. init.rc Daemon
+cc_binary {
+    name: "storage_guardd",
+    srcs: [
+        "src/daemon_main.cpp",
+    ],
+    //install .rc file into /system/etc/init
+    init_rc: [
+        "storage_guard.rc"
+    ],
+    shared_libs: [
+        "libbase",
+        "liblog",
+        "libcutils", // provides android_get_control_socket
+        "libstorage_telemetry"
+    ],
+     cflags : [
+        "-Wall",
+        "-Werror",
+        "-Wextra",
+        ],
+
+}
+
+cc_binary {
+    name: "storage_guard_ctl",
+    srcs: [
+        "src/client_main.cpp"
+    ],
+    shared_libs: [
+        "libbase",
+        "liblog",
+        "libcutils"
+    ],
+    cflags: [
+        "-Wall",
+        "-Werror"
+    ]
+
+
+
+}
