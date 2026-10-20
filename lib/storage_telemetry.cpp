@@ -13,9 +13,9 @@ namespace android::storage::guard {
         metrics.mount_point = path;
 
         struct statvfs stat{};
-        if(starvfs(path.c_str(), &stat) != 0) {
+        if(statvfs(path.c_str(), &stat) != 0) {
             PLOG(ERROR) << "statvfs failed on " << path;
-            metrics.status = HealthStatus:CRITICAL;
+            metrics.status = HealthStatus::CRITICAL;
             return metrics;
         }
 

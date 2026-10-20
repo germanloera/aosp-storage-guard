@@ -24,13 +24,13 @@ int ObtainServerSocket(){
 
     // Fallback manual shell direct execution
     LOG(WARNING) << "android_get_control_socket failed, manually starting Unix socket";
-    fd = socket(AF_UNIX, SOCKET_STREAM, 0);
+    fd = socket(AF_UNIX, SOCK_STREAM, 0);
     if( fd < 0){
         PLOG(FATAL) << "Failed to create a Unix Socket";
     }
 
     struct sockaddr_un addr{};
-    addr.sun_family = AD_UNIX;
+    addr.sun_family = AF_UNIX;
     strncpy(addr.sun_path, FALLBACK_SOCKET_PATH, sizeof(addr.sun_path) - 1);
     unlink(FALLBACK_SOCKET_PATH);
 
@@ -66,12 +66,13 @@ void HandleClient(int client_fd){
     }else{
         response = "{\"error\":\"Unknown command. Use: CHECK <path>, CHECK_DATA, CHECK_SYSTEM\"}\n";
     }
-    write(client_fd, response.c_str(), response.length())
+    write(client_fd, response.c_str(), response.length());
     close(client_fd);
 
 }
 
-int main(int argc, char* argv){
+int main(int argc, char** argv){
+    (void)argc;
     ab::InitLogging(argv, ab::LogdLogger());
     LOG(INFO) << "Starting storage_guardd Daemon... ";
 
@@ -85,7 +86,7 @@ int main(int argc, char* argv){
         int client_fd = accept(server_fd, nullptr, nullptr);
         if( client_fd < 0){
             PLOG(ERROR) << "Error accepting client";
-            continue
+            continue;
         }
         HandleClient(client_fd);
     }

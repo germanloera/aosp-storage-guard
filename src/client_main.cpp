@@ -10,7 +10,7 @@
 namespace ab = android::base;
 
 int main(int argc, char **argv) {
-    ab::InitLogging(argv, ab::LogLogger());
+    ab::InitLogging(argv, ab::LogdLogger());
     std::string cmd = (argc > 1) ? argv[1] : "CHECK_DATA";
 
     int sock = socket(AF_UNIX, SOCK_STREAM, 0);
@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
     if (connect(sock, reinterpret_cast<struct sockaddr *>(&addr), sizeof(addr)) < 0) {
         std::cerr << "Unable to connect with storage_guardd daemon on " << SOCKET_PATH
                   << ". Is the service running?";
-        close(sock)
+        close(sock);
         return 1;
     }
 
