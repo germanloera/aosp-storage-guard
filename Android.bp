@@ -16,7 +16,7 @@ cc_library_shared {
 
 // 2. init.rc Daemon
 cc_binary {
-    name: "storage_guardd",
+    name: "storage_guard",
     srcs: [
         "src/daemon_main.cpp",
     ],

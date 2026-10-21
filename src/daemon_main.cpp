@@ -13,6 +13,7 @@ namespace ab = android::base;
 
 #define SOCKET_NAME "storage_guard"
 #define FALLBACK_SOCKET_PATH "/dev/socket/storage_guard"
+#define FALLBACK_SOCKET_PATH_TEMP "/data/local/tmp/storage_guard"
 
 int ObtainServerSocket(){
     //1. try to get pre open descriptor
@@ -34,8 +35,11 @@ int ObtainServerSocket(){
     strncpy(addr.sun_path, FALLBACK_SOCKET_PATH, sizeof(addr.sun_path) - 1);
     unlink(FALLBACK_SOCKET_PATH);
 
+
     if(bind(fd, reinterpret_cast<struct sockaddr*>(&addr), sizeof(addr)) < 0){
-        PLOG(FATAL) << "Manual socked bind failed";
+        PLOG(ERROR) << "Manual socked bind failed";
+        close(fd);
+        return -1;
     }
 
     return fd;
@@ -74,14 +78,14 @@ void HandleClient(int client_fd){
 int main(int argc, char** argv){
     (void)argc;
     ab::InitLogging(argv, ab::LogdLogger());
-    LOG(INFO) << "Starting storage_guardd Daemon... ";
+    LOG(INFO) << "Starting storage_guard Daemon... ";
 
     int server_fd = ObtainServerSocket();
     if(listen(server_fd, 4) < 0){
         PLOG(FATAL) << "Socket listen failed";
     }
 
-    LOG(INFO) << "storage_guardd ready, listening connections";
+    LOG(INFO) << "storage_guard ready, listening connections";
     while (true){
         int client_fd = accept(server_fd, nullptr, nullptr);
         if( client_fd < 0){
