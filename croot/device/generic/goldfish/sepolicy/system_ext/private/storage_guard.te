@@ -1,0 +1,16 @@
+type storage_guard, domain, coredomain;
+type storage_guard_exec, exec_type, file_type, system_file_type;
+
+init_daemon_domain(storage_guard)
+permissive storage_guard;
+
+type storage_guard_socket, file_type, coredomain_socket;
+
+allow init storage_guard_socket:sock_file { create setattr unlink getattr };
+allow storage_guard storage_guard_socket:sock_file { getattr read write };
+
+allow init storage_guard_socket:sock_file { create setattr unlink getattr };
+allow storage_guard storage_guard_socket:sock_file { getattr read write };
+
+# Permiso crítico para escuchar y aceptar conexiones en el socket
+allow storage_guard self:unix_stream_socket { create_stream_socket_perms };

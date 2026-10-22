@@ -1,0 +1,4 @@
+/system_ext/bin/init\.adb-setup\.ranchu\.sh u:object_r:goldfish_adb_setup_exec:s0
+/system_ext/bin/init\.adb-start\.ranchu\.sh u:object_r:goldfish_adb_start_exec:s0
+/system/bin/storage_guard    u:object_r:storage_guard_exec:s0
+/dev/socket/storage_guard    u:object_r:storage_guard_socket:s0

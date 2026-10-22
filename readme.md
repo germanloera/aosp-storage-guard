@@ -213,7 +213,7 @@ PRODUCT_PACKAGES += \
 
 ### 4.3. Adding SELinux Policies
 
-Android's Security-Enhanced Linux (SELinux) blocks unlabeled daemons from binding sockets or running in `init`. Add the following policies to your device or platform policy directories (for emulator/Goldfish, typically in `device/generic/goldfish/sepolicy/common/` or `system/sepolicy/private/`).
+Android's Security-Enhanced Linux (SELinux) blocks unlabeled daemons from binding sockets or running in `init`. Add the following policies to your device or platform policy directories (for emulator/Goldfish, typically in `device/generic/goldfish/sepolicy/common/` or `system/sepolicy/private/`, Examples used are included in croot folder).
 
 #### 1. File Contexts (`file_contexts`)
 
